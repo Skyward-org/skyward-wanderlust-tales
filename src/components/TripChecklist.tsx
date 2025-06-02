@@ -26,39 +26,39 @@ const TripChecklist = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-4">Trip Checklist</h3>
+    <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border border-slate-200">
+      <h3 className="text-2xl font-bold text-slate-900 mb-6">Trip Checklist</h3>
       
-      <div className="space-y-3">
+      <div className="space-y-4">
         {checklistItems.map((item, index) => (
-          <div key={index} className="flex items-center space-x-3">
+          <div key={index} className="flex items-center space-x-4">
             <button
               onClick={() => toggleItem(index)}
-              className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+              className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
                 checkedItems.has(index)
-                  ? 'bg-green-500 border-green-500 text-white'
-                  : 'border-gray-300 hover:border-gray-400'
+                  ? 'bg-slate-700 border-slate-700 text-white shadow-md'
+                  : 'border-slate-300 hover:border-slate-400'
               }`}
             >
               {checkedItems.has(index) && (
-                <span className="text-xs">✓</span>
+                <span className="text-sm">✓</span>
               )}
             </button>
-            <span className={`${checkedItems.has(index) ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+            <span className={`text-lg ${checkedItems.has(index) ? 'line-through text-slate-500' : 'text-slate-800'}`}>
               {item}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 pt-4 border-t">
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Progress</span>
-          <span className="font-medium">{checkedItems.size}/{checklistItems.length} completed</span>
+      <div className="mt-6 pt-6 border-t border-slate-200">
+        <div className="flex justify-between text-sm mb-3">
+          <span className="text-slate-600 font-medium">Progress</span>
+          <span className="font-semibold text-slate-900">{checkedItems.size}/{checklistItems.length} completed</span>
         </div>
-        <div className="mt-2 bg-gray-200 rounded-full h-2">
+        <div className="bg-slate-200 rounded-full h-3">
           <div
-            className="bg-green-500 h-2 rounded-full transition-all duration-300"
+            className="bg-slate-700 h-3 rounded-full transition-all duration-300 shadow-sm"
             style={{ width: `${(checkedItems.size / checklistItems.length) * 100}%` }}
           ></div>
         </div>
