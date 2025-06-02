@@ -12,32 +12,32 @@ const HeroBanner = () => {
           destination: 'Barcelona',
           title: 'Discover Barcelona\'s Architectural Mastery',
           subtitle: 'Experience the sophisticated blend of Gothic quarters and modernist marvels. Your Glide membership provides exclusive access to premium accommodations and curated cultural experiences.',
-          image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1920&q=80',
-          gradient: 'from-slate-900/90 to-slate-700/90'
+          image: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1920&q=80',
+          gradient: 'from-slate-900/50 to-slate-700/50'
         };
       case 'Business':
         return {
           destination: 'Chicago',
           title: 'Executive Travel to Chicago',
           subtitle: 'Elevate your business journey with first-class amenities and priority services. Experience the pinnacle of corporate travel with seamless connections and premium lounges.',
-          image: 'https://images.unsplash.com/photo-1477414348463-c0eb7f1359b6?auto=format&fit=crop&w=1920&q=80',
-          gradient: 'from-amber-900/90 to-amber-700/90'
+          image: 'https://images.unsplash.com/photo-1494522358652-f30e61a60313?auto=format&fit=crop&w=1920&q=80',
+          gradient: 'from-amber-900/50 to-amber-700/50'
         };
       case 'Guest':
         return {
           destination: 'Tokyo',
           title: 'Tokyo: Where Tradition Meets Innovation',
           subtitle: 'Embark on a curated journey through Japan\'s capital. Discover ancient temples alongside cutting-edge technology in this remarkable fusion of past and future.',
-          image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1920&q=80',
-          gradient: 'from-gray-900/90 to-gray-700/90'
+          image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1920&q=80',
+          gradient: 'from-gray-900/50 to-gray-700/50'
         };
       default:
         return {
           destination: 'Tokyo',
           title: 'Tokyo: Where Tradition Meets Innovation',
           subtitle: 'Embark on a curated journey through Japan\'s capital.',
-          image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1920&q=80',
-          gradient: 'from-gray-900/90 to-gray-700/90'
+          image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1920&q=80',
+          gradient: 'from-gray-900/50 to-gray-700/50'
         };
     }
   };
@@ -63,7 +63,7 @@ const HeroBanner = () => {
         style={{ backgroundImage: `url(${heroContent.image})` }}
       />
       
-      {/* Gradient overlay */}
+      {/* Reduced gradient overlay */}
       <div className={`absolute inset-0 bg-gradient-to-r ${heroContent.gradient}`} />
 
       {/* Content */}
@@ -88,9 +88,10 @@ const HeroBanner = () => {
               {heroContent.subtitle}
             </p>
 
-            {/* CTA Button */}
-            <button className="bg-white text-slate-900 px-10 py-4 rounded-lg font-semibold text-lg hover:bg-slate-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
-              View Trip Details
+            {/* Enhanced CTA Button */}
+            <button className="group relative bg-white text-slate-900 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-slate-50 transition-all duration-300 shadow-2xl hover:shadow-xl transform hover:-translate-y-0.5 border border-white/20">
+              <span className="relative z-10">View Trip Details</span>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
           </div>
         </div>

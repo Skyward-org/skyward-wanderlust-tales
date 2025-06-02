@@ -1,5 +1,6 @@
 
 import { useUser } from '@/hooks/useUser';
+import { CloudRain, CloudDrizzle } from 'lucide-react';
 
 const Sidebar = () => {
   const { user } = useUser();
@@ -45,11 +46,32 @@ const Sidebar = () => {
 
     switch (user.profileType) {
       case 'Glide':
-        return { city: 'Barcelona', temp: '22°C', condition: 'Sunny', humidity: '65%' };
+        return { 
+          city: 'Barcelona', 
+          forecast: [
+            { day: 'Today', temp: '22°C', condition: 'sunny', humidity: '65%' },
+            { day: 'Tomorrow', temp: '24°C', condition: 'sunny', humidity: '60%' },
+            { day: 'Day 3', temp: '20°C', condition: 'rainy', humidity: '75%' }
+          ]
+        };
       case 'Business':
-        return { city: 'Chicago', temp: '8°C', condition: 'Cloudy', humidity: '78%' };
+        return { 
+          city: 'Chicago', 
+          forecast: [
+            { day: 'Today', temp: '8°C', condition: 'rainy', humidity: '78%' },
+            { day: 'Tomorrow', temp: '6°C', condition: 'drizzle', humidity: '82%' },
+            { day: 'Day 3', temp: '10°C', condition: 'sunny', humidity: '70%' }
+          ]
+        };
       case 'Guest':
-        return { city: 'Tokyo', temp: '15°C', condition: 'Partly Cloudy', humidity: '72%' };
+        return { 
+          city: 'Tokyo', 
+          forecast: [
+            { day: 'Today', temp: '15°C', condition: 'drizzle', humidity: '72%' },
+            { day: 'Tomorrow', temp: '18°C', condition: 'sunny', humidity: '68%' },
+            { day: 'Day 3', temp: '16°C', condition: 'rainy', humidity: '80%' }
+          ]
+        };
       default:
         return null;
     }
@@ -70,6 +92,17 @@ const Sidebar = () => {
     }
   };
 
+  const getWeatherIcon = (condition: string) => {
+    switch (condition) {
+      case 'rainy':
+        return <CloudRain className="w-6 h-6 text-blue-500" />;
+      case 'drizzle':
+        return <CloudDrizzle className="w-6 h-6 text-blue-400" />;
+      default:
+        return <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center text-xs">☀</div>;
+    }
+  };
+
   const boardingPass = getBoardingPassInfo();
   const weather = getWeatherInfo();
   const carRental = getCarRentalOffer();
@@ -79,58 +112,71 @@ const Sidebar = () => {
   return (
     <div className="space-y-6">
       {/* Boarding Pass */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-6">
-        <h3 className="text-lg font-bold mb-4">Boarding Pass</h3>
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+        <h3 className="text-lg font-bold text-slate-900 mb-4 border-b border-slate-200 pb-2">Boarding Pass</h3>
         <div className="space-y-3">
           <div className="flex justify-between">
-            <span className="text-blue-200">Passenger</span>
-            <span className="font-semibold">{boardingPass.passenger}</span>
+            <span className="text-slate-600 font-medium">Passenger</span>
+            <span className="font-semibold text-slate-900">{boardingPass.passenger}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-blue-200">Flight</span>
-            <span className="font-semibold">{boardingPass.flight}</span>
+            <span className="text-slate-600 font-medium">Flight</span>
+            <span className="font-semibold text-slate-900">{boardingPass.flight}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-blue-200">Seat</span>
-            <span className="font-semibold">{boardingPass.seat}</span>
+            <span className="text-slate-600 font-medium">Seat</span>
+            <span className="font-semibold text-slate-900">{boardingPass.seat}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-blue-200">Gate</span>
-            <span className="font-semibold">{boardingPass.gate}</span>
+            <span className="text-slate-600 font-medium">Gate</span>
+            <span className="font-semibold text-slate-900">{boardingPass.gate}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-blue-200">Departure</span>
-            <span className="font-semibold">{boardingPass.departure}</span>
+            <span className="text-slate-600 font-medium">Departure</span>
+            <span className="font-semibold text-slate-900">{boardingPass.departure}</span>
           </div>
         </div>
-        <div className="mt-4 pt-4 border-t border-blue-400">
+        <div className="mt-4 pt-4 border-t border-slate-200">
           <div className="text-center">
-            <p className="text-blue-200 text-sm">Destination</p>
-            <p className="text-xl font-bold">{boardingPass.destination}</p>
+            <p className="text-slate-600 text-sm font-medium">Destination</p>
+            <p className="text-xl font-bold text-slate-900">{boardingPass.destination}</p>
           </div>
         </div>
       </div>
 
-      {/* Weather */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Weather in {weather.city}</h3>
-        <div className="text-center">
-          <div className="text-4xl font-bold text-blue-600 mb-2">{weather.temp}</div>
-          <p className="text-gray-600 mb-2">{weather.condition}</p>
-          <p className="text-sm text-gray-500">Humidity: {weather.humidity}</p>
+      {/* Weather Forecast */}
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+        <h3 className="text-lg font-bold text-slate-900 mb-4 border-b border-slate-200 pb-2">Weather in {weather.city}</h3>
+        <div className="space-y-4">
+          {weather.forecast.map((day, index) => (
+            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-slate-50">
+              <div className="flex items-center space-x-3">
+                {getWeatherIcon(day.condition)}
+                <div>
+                  <p className="font-semibold text-slate-900">{day.day}</p>
+                  <p className="text-sm text-slate-600">Humidity: {day.humidity}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-slate-900">{day.temp}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Car Rental Offer */}
-      <div className="bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-lg p-6">
-        <h3 className="text-lg font-bold mb-2">Car Rental Offer</h3>
-        <p className="text-amber-100 text-sm mb-3">Exclusive for {user.profileType} members</p>
-        <div className="space-y-2">
-          <p className="text-2xl font-bold">{carRental.discount} OFF</p>
-          <p className="text-amber-100">{carRental.type}</p>
-          <p className="text-sm text-amber-200">with {carRental.company}</p>
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+        <h3 className="text-lg font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2">Car Rental Offer</h3>
+        <p className="text-amber-600 text-sm mb-4 font-medium">Exclusive for {user.profileType} members</p>
+        <div className="space-y-3">
+          <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+            <p className="text-3xl font-bold text-amber-600 mb-1">{carRental.discount} OFF</p>
+            <p className="text-slate-700 font-medium">{carRental.type}</p>
+            <p className="text-sm text-slate-600">with {carRental.company}</p>
+          </div>
         </div>
-        <button className="w-full bg-white text-orange-600 py-2 rounded-lg font-semibold mt-4 hover:bg-gray-100 transition-colors">
+        <button className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold mt-4 hover:bg-amber-700 transition-colors shadow-md hover:shadow-lg">
           Book Now
         </button>
       </div>
