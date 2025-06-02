@@ -1,12 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import Header from '@/components/Header';
+import HeroBanner from '@/components/HeroBanner';
+import FlightDetails from '@/components/FlightDetails';
+import TripChecklist from '@/components/TripChecklist';
+import HotelReservation from '@/components/HotelReservation';
+import Sidebar from '@/components/Sidebar';
+import FeaturedDestinations from '@/components/FeaturedDestinations';
+import WhyChooseSection from '@/components/WhyChooseSection';
+import StratusSection from '@/components/StratusSection';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <HeroBanner />
+      
+      {/* Main content section */}
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main content - 2 columns */}
+            <div className="lg:col-span-2">
+              <FlightDetails />
+              <TripChecklist />
+              <HotelReservation />
+            </div>
+            
+            {/* Sidebar - 1 column */}
+            <div className="lg:col-span-1">
+              <Sidebar />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <FeaturedDestinations />
+      <WhyChooseSection />
+      <StratusSection />
+      <Footer />
     </div>
   );
 };
