@@ -1,6 +1,8 @@
 
 import { useUser } from '@/hooks/useUser';
-import { CloudRain, CloudDrizzle } from 'lucide-react';
+import { Shield, Plane, ChevronRight } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const Sidebar = () => {
   const { user } = useUser();
@@ -12,11 +14,14 @@ const Sidebar = () => {
       case 'Glide':
         return {
           passenger: user.username,
-          flight: 'SK 1247',
+          flight: 'SK 1234',
           seat: '14A',
-          gate: 'B12',
-          departure: '10:45',
-          destination: 'Barcelona'
+          gate: 'B22',
+          departure: '10:30 AM',
+          date: 'May 15, 2025',
+          from: { code: 'NYC', city: 'New York' },
+          to: { code: 'CHI', city: 'Chicago' },
+          duration: '2h 45m'
         };
       case 'Business':
         return {
@@ -24,8 +29,11 @@ const Sidebar = () => {
           flight: 'SK 891',
           seat: '3C',
           gate: 'A7',
-          departure: '14:15',
-          destination: 'Chicago'
+          departure: '2:15 PM',
+          date: 'May 15, 2025',
+          from: { code: 'NYC', city: 'New York' },
+          to: { code: 'CHI', city: 'Chicago' },
+          duration: '2h 30m'
         };
       case 'Guest':
         return {
@@ -33,153 +41,191 @@ const Sidebar = () => {
           flight: 'SK 643',
           seat: '28F',
           gate: 'C15',
-          departure: '11:00',
-          destination: 'Tokyo'
+          departure: '11:00 AM',
+          date: 'May 15, 2025',
+          from: { code: 'NYC', city: 'New York' },
+          to: { code: 'NRT', city: 'Tokyo' },
+          duration: '14h 20m'
         };
       default:
         return null;
     }
   };
 
-  const getWeatherInfo = () => {
-    if (!user) return null;
+  const getWeatherData = () => {
+    if (!user) return [];
 
     switch (user.profileType) {
       case 'Glide':
-        return { 
-          city: 'Barcelona', 
-          forecast: [
-            { day: 'Today', temp: '22°C', condition: 'sunny', humidity: '65%' },
-            { day: 'Tomorrow', temp: '24°C', condition: 'sunny', humidity: '60%' },
-            { day: 'Day 3', temp: '20°C', condition: 'rainy', humidity: '75%' }
-          ]
-        };
+        return [
+          { day: 'Friday', condition: 'Rainy', emoji: '🌧️', temp: '72°F' },
+          { day: 'Saturday', condition: 'Partly Cloudy', emoji: '⛅', temp: '75°F' },
+          { day: 'Sunday', condition: 'Sunny', emoji: '☀️', temp: '80°F' }
+        ];
       case 'Business':
-        return { 
-          city: 'Chicago', 
-          forecast: [
-            { day: 'Today', temp: '8°C', condition: 'rainy', humidity: '78%' },
-            { day: 'Tomorrow', temp: '6°C', condition: 'drizzle', humidity: '82%' },
-            { day: 'Day 3', temp: '10°C', condition: 'sunny', humidity: '70%' }
-          ]
-        };
+        return [
+          { day: 'Friday', condition: 'Cloudy', emoji: '☁️', temp: '68°F' },
+          { day: 'Saturday', condition: 'Sunny', emoji: '☀️', temp: '72°F' },
+          { day: 'Sunday', condition: 'Partly Cloudy', emoji: '⛅', temp: '74°F' }
+        ];
       case 'Guest':
-        return { 
-          city: 'Tokyo', 
-          forecast: [
-            { day: 'Today', temp: '15°C', condition: 'drizzle', humidity: '72%' },
-            { day: 'Tomorrow', temp: '18°C', condition: 'sunny', humidity: '68%' },
-            { day: 'Day 3', temp: '16°C', condition: 'rainy', humidity: '80%' }
-          ]
-        };
+        return [
+          { day: 'Friday', condition: 'Clear', emoji: '🌤️', temp: '15°C' },
+          { day: 'Saturday', condition: 'Rainy', emoji: '🌧️', temp: '18°C' },
+          { day: 'Sunday', condition: 'Sunny', emoji: '☀️', temp: '20°C' }
+        ];
       default:
-        return null;
+        return [];
     }
   };
 
-  const getCarRentalOffer = () => {
-    if (!user) return null;
-
-    switch (user.profileType) {
-      case 'Glide':
-        return { discount: '20%', type: 'Compact Cars', company: 'EuroCar' };
-      case 'Business':
-        return { discount: '30%', type: 'Luxury Vehicles', company: 'Executive Rentals' };
-      case 'Guest':
-        return { discount: '15%', type: 'Economy Cars', company: 'Budget Auto' };
-      default:
-        return null;
-    }
-  };
-
-  const getWeatherIcon = (condition: string) => {
-    switch (condition) {
-      case 'rainy':
-        return <CloudRain className="w-6 h-6 text-blue-500" />;
-      case 'drizzle':
-        return <CloudDrizzle className="w-6 h-6 text-blue-400" />;
-      default:
-        return <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center text-xs">☀</div>;
-    }
+  const getDestinationCity = () => {
+    if (!user) return 'Chicago';
+    return user.profileType === 'Guest' ? 'Tokyo' : 'Chicago';
   };
 
   const boardingPass = getBoardingPassInfo();
-  const weather = getWeatherInfo();
-  const carRental = getCarRentalOffer();
+  const weatherData = getWeatherData();
+  const destinationCity = getDestinationCity();
 
-  if (!boardingPass || !weather || !carRental) return null;
+  if (!boardingPass) return null;
 
   return (
     <div className="space-y-6">
-      {/* Boarding Pass */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
-        <h3 className="text-lg font-bold text-slate-900 mb-4 border-b border-slate-200 pb-2">Boarding Pass</h3>
-        <div className="space-y-3">
-          <div className="flex justify-between">
-            <span className="text-slate-600 font-medium">Passenger</span>
-            <span className="font-semibold text-slate-900">{boardingPass.passenger}</span>
+      {/* Trip Protection Card */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="font-semibold mb-3 flex items-center">
+            <Shield className="h-4 w-4 mr-2 text-indigo-600" />
+            Trip Protection
+          </h3>
+          <p className="text-sm text-gray-600 mb-3">
+            Protect your upcoming {destinationCity} trip against unexpected events
+          </p>
+          <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-100 mb-4">
+            <div className="flex justify-between items-center">
+              <div className="font-medium text-indigo-900">Premium Protection</div>
+              <div className="text-indigo-700 font-bold">$49</div>
+            </div>
+            <div className="text-xs text-indigo-700 mt-1">
+              Includes trip cancellation and delay coverage
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span className="text-slate-600 font-medium">Flight</span>
-            <span className="font-semibold text-slate-900">{boardingPass.flight}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-slate-600 font-medium">Seat</span>
-            <span className="font-semibold text-slate-900">{boardingPass.seat}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-slate-600 font-medium">Gate</span>
-            <span className="font-semibold text-slate-900">{boardingPass.gate}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-slate-600 font-medium">Departure</span>
-            <span className="font-semibold text-slate-900">{boardingPass.departure}</span>
-          </div>
-        </div>
-        <div className="mt-4 pt-4 border-t border-slate-200">
-          <div className="text-center">
-            <p className="text-slate-600 text-sm font-medium">Destination</p>
-            <p className="text-xl font-bold text-slate-900">{boardingPass.destination}</p>
-          </div>
-        </div>
-      </div>
+          <Button className="w-full">Add Protection</Button>
+        </CardContent>
+      </Card>
 
-      {/* Weather Forecast */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
-        <h3 className="text-lg font-bold text-slate-900 mb-4 border-b border-slate-200 pb-2">Weather in {weather.city}</h3>
-        <div className="space-y-4">
-          {weather.forecast.map((day, index) => (
-            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-slate-50">
-              <div className="flex items-center space-x-3">
-                {getWeatherIcon(day.condition)}
-                <div>
-                  <p className="font-semibold text-slate-900">{day.day}</p>
-                  <p className="text-sm text-slate-600">Humidity: {day.humidity}</p>
+      {/* Boarding Pass */}
+      <div className="mb-4">
+        <h3 className="font-semibold mb-3">Your Boarding Pass</h3>
+        <div className="max-w-md mx-auto relative">
+          <div className="absolute -top-4 -right-4 z-30">
+            <Button size="icon" className="rounded-full h-8 w-8 p-0 bg-blue-600 hover:bg-blue-700 shadow-lg">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="perspective-1000 cursor-pointer scale-90 transition-transform duration-300">
+            <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+              <div className="bg-gradient-to-r from-blue-600 to-sky-500 px-6 py-4 flex justify-between items-center">
+                <div className="text-white">
+                  <div className="text-sm font-semibold opacity-80">Boarding Pass</div>
+                  <div className="text-lg font-bold">Flight {boardingPass.flight}</div>
+                </div>
+                <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center">
+                  <Plane className="text-blue-600 h-5 w-5 transform rotate-45" />
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-slate-900">{day.temp}</p>
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <div className="text-sm text-gray-500">From</div>
+                    <div className="text-xl font-bold">{boardingPass.from.code}</div>
+                    <div className="text-xs text-gray-500">{boardingPass.from.city}</div>
+                  </div>
+                  <div className="flex-1 flex flex-col items-center px-4">
+                    <div className="w-full border-t border-dashed border-gray-300 relative">
+                      <Plane className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-600 h-5 w-5 rotate-45" />
+                    </div>
+                    <div className="text-xs text-gray-500 mt-2">{boardingPass.duration}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm text-gray-500">To</div>
+                    <div className="text-xl font-bold">{boardingPass.to.code}</div>
+                    <div className="text-xs text-gray-500">{boardingPass.to.city}</div>
+                  </div>
+                </div>
+                <div className="flex justify-between mb-4">
+                  <div>
+                    <div className="text-xs text-gray-500">Date</div>
+                    <div className="font-medium">{boardingPass.date}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500">Departure</div>
+                    <div className="font-medium">{boardingPass.departure}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500">Gate</div>
+                    <div className="font-medium">{boardingPass.gate}</div>
+                  </div>
+                </div>
+                <div className="flex items-center mb-6">
+                  <div className="mr-4">
+                    <div className="text-xs text-gray-500">Passenger</div>
+                    <div className="font-medium">{boardingPass.passenger}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500">Seat</div>
+                    <div className="font-medium">{boardingPass.seat}</div>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <div className="text-xs text-gray-500">Tap to view boarding time</div>
+                </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
-      {/* Car Rental Offer */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
-        <h3 className="text-lg font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2">Car Rental Offer</h3>
-        <p className="text-amber-600 text-sm mb-4 font-medium">Exclusive for {user.profileType} members</p>
-        <div className="space-y-3">
-          <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-            <p className="text-3xl font-bold text-amber-600 mb-1">{carRental.discount} OFF</p>
-            <p className="text-slate-700 font-medium">{carRental.type}</p>
-            <p className="text-sm text-slate-600">with {carRental.company}</p>
+      {/* Weather Card */}
+      <Card>
+        <CardContent className="p-4">
+          <h3 className="font-semibold mb-3">{destinationCity} Weather</h3>
+          <div className="space-y-2">
+            {weatherData.map((day, index) => (
+              <div key={index} className="flex justify-between items-center p-2 border-b last:border-0">
+                <div className="flex items-center">
+                  <span className="text-xl mr-3">{day.emoji}</span>
+                  <div>
+                    <div className="font-medium">{day.day}</div>
+                    <div className="text-xs text-gray-500">{day.condition}</div>
+                  </div>
+                </div>
+                <div className="text-lg">{day.temp}</div>
+              </div>
+            ))}
           </div>
-        </div>
-        <button className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold mt-4 hover:bg-amber-700 transition-colors shadow-md hover:shadow-lg">
-          Book Now
-        </button>
-      </div>
+        </CardContent>
+      </Card>
+
+      {/* Member Offer Card */}
+      <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+        <CardContent className="p-4">
+          <div className="flex items-start">
+            <div className="flex-grow">
+              <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-blue-100 text-blue-800 mb-2">
+                {user.profileType} Member Offer
+              </div>
+              <h3 className="font-semibold">Need a car in {destinationCity}?</h3>
+              <p className="text-sm text-blue-700 mt-1 mb-3">
+                Get 25% off car rentals with your membership
+              </p>
+            </div>
+            <div className="text-3xl">🚗</div>
+          </div>
+          <Button className="w-full">View Offers</Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };
