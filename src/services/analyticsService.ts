@@ -1,16 +1,61 @@
 import { ProfileType } from './userService';
+import React from 'react';
 
 interface Profile {
   hashedAeroplanNumber: string;
   name: string;
 }
 
-type FeaturedContentCallback = (content: string) => void;
+export interface OfferData {
+  content: string;
+  [key: string]: unknown;
+}
+
+interface Placement {
+  placementId: string;
+  activityId: string;
+  callback: (data: OfferData | null) => void;
+  render: (data: OfferData | null) => React.ReactElement | null;
+}
+
+type FeaturedContentCallback = (data: OfferData | null) => void;
 
 class AnalyticsService {
-  private readonly PLACEMENT_ID = 'dps:offer-placement:1ac72c2ce4902163';
-  private readonly SCOPE = 'eyJ4ZG06YWN0aXZpdHlJZCI6ImRwczpvZmZlci1hY3Rpdml0eToxYWM3MmViN2JjNzA5OTFlIiwieGRtOnBsYWNlbWVudElkIjoiZHBzOm9mZmVyLXBsYWNlbWVudDoxYWM3MmMyY2U0OTAyMTYzIn0=';
-  private onFeaturedContentUpdate: FeaturedContentCallback | null = null;
+  private scopesFeatured = {
+    "xdm:activityId": "dps:offer-activity:1ac72eb7bc70991e",
+    "xdm:placementId": "dps:offer-placement:1ac72c2ce4902163"
+  };
+
+  private scopesHero = {
+    "xdm:activityId": "dps:offer-activity:1ab7fa8cd81afff1",
+    "xdm:placementId": "dps:offer-placement:1ab7f42d1a43b305"
+  };
+
+  private placements: Placement[] = [
+    {
+      placementId: 'dps:offer-placement:1ac72c2ce4902163',
+      activityId: 'dps:offer-activity:1ac72eb7bc70991e',
+      callback: () => {},
+      render: (data: OfferData | null) => data?.content ? React.createElement('div', {
+        id: 'featured-offer-container',
+        className: 'bg-white rounded-lg shadow-sm p-6 mb-8',
+        dangerouslySetInnerHTML: { __html: data.content }
+      }) : null
+    },
+    {
+      placementId: 'dps:offer-placement:1ab7f42d1a43b305',
+      activityId: 'dps:offer-activity:1ab7fa8cd81afff1',
+      callback: () => {},
+      render: (data: OfferData | null) => data?.deliveryURL ? React.createElement('div', {
+        id: 'hero-offer-container',
+        className: 'bg-white rounded-lg shadow-sm p-6 mb-8'
+      }, React.createElement('img', {
+        src: data.deliveryURL,
+        className: 'w-full h-auto rounded-lg',
+        alt: 'Hero Offer'
+      })) : null
+    }
+  ];
   private currentProfileType: ProfileType | null = null;
 
   private profiles: Record<ProfileType, Profile> = {
@@ -28,12 +73,30 @@ class AnalyticsService {
     }
   };
 
-  setFeaturedContentCallback(callback: FeaturedContentCallback): void {
-    this.onFeaturedContentUpdate = callback;
-    // If we already have a profile type, fetch offers immediately
-    if (this.currentProfileType) {
-      this.fetchFeaturedOffers();
+  private getScope(placementId: string, activityId: string): string {
+    const scopeObject = {
+      "xdm:activityId": activityId,
+      "xdm:placementId": placementId
+    };
+    return btoa(JSON.stringify(scopeObject));
+  }
+
+  setPlacementCallback(placementId: string, callback: FeaturedContentCallback): void {
+    const placement = this.placements.find(p => p.placementId === placementId);
+    if (placement) {
+      placement.callback = callback;
+      if (this.currentProfileType) {
+        this.fetchFeaturedOffers(placementId);
+      }
     }
+  }
+
+  getPlacementRender(placementId: string): ((data: OfferData | null) => React.ReactElement | null) | undefined {
+    return this.placements.find(p => p.placementId === placementId)?.render;
+  }
+
+  addPlacement(placement: Placement): void {
+    this.placements.push(placement);
   }
 
   private getProfile(profileType: ProfileType): Profile {
@@ -41,33 +104,43 @@ class AnalyticsService {
     return this.profiles[profileType];
   }
 
-  private async fetchFeaturedOffers(): Promise<void> {
+  private async fetchFeaturedOffers(placementId: string): Promise<void> {
+    const placement = this.placements.find(p => p.placementId === placementId);
+    if (!placement) return;
+
     try {
+      const profile = this.currentProfileType ? this.getProfile(this.currentProfileType) : null;
       const result = await window.alloy?.("sendEvent", {
-        decisionScopes: [this.SCOPE]
+        decisionScopes: [this.getScope(placement.placementId, placement.activityId)],
+        xdm: profile ? {
+          identityMap: {
+            hashedAeroplanNumber: [{
+              id: profile.hashedAeroplanNumber,
+              authenticatedState: "authenticated",
+              primary: true
+            }]
+          }
+        } : undefined
       });
 
       if (result?.decisions) {
-        const offer = result.decisions.find(d => d.placement.id === this.PLACEMENT_ID);
-        console.log("-- Found offer -- ", offer?.items[0].name);
+        const offer = result.decisions.find(d => d.placement.id === placementId);
+        console.log("-- Found offer -- ", offer);
         
         if (offer && offer.items.length > 0) {
-          const content = offer.items[0].data.content;
-          this.onFeaturedContentUpdate?.(content);
+          const data = offer.items[0].data as OfferData;
+          placement.callback(data);
         } else {
-          // Clear content if no offer is found
-          this.onFeaturedContentUpdate?.('');
+          placement.callback(null);
         }
       }
     } catch (error) {
       console.error('Error fetching featured offers:', error);
-      // Clear content on error
-      this.onFeaturedContentUpdate?.('');
+      placement.callback(null);
     }
   }
 
   async sendProfileSwitchEvent(profileType: ProfileType): Promise<void> {
-    // Store the current profile type
     this.currentProfileType = profileType;
 
     if (profileType === 'Glide' || profileType === 'Business') {
@@ -85,11 +158,13 @@ class AnalyticsService {
       });
       console.log("-- Sent profile switch event --", profile.name);
 
-      // Fetch featured offers after profile switch
-      await this.fetchFeaturedOffers();
+      for (const placement of this.placements) {
+        await this.fetchFeaturedOffers(placement.placementId);
+      }
     } else {
-      // Clear content for Guest profile
-      this.onFeaturedContentUpdate?.('');
+      for (const placement of this.placements) {
+        placement.callback(null);
+      }
     }
   }
 }

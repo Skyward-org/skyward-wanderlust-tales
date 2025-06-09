@@ -4,21 +4,14 @@ import { analyticsService } from '@/services/analyticsService';
 
 const FeaturedOffers = () => {
   const { featuredContent, setFeaturedContent } = useFeaturedOffers();
+  const render = analyticsService.getPlacementRender('dps:offer-placement:1ac72c2ce4902163');
 
   useEffect(() => {
-    // Set up the callback for featured content updates
-    analyticsService.setFeaturedContentCallback(setFeaturedContent);
+    analyticsService.setPlacementCallback('dps:offer-placement:1ac72c2ce4902163', setFeaturedContent);
   }, [setFeaturedContent]);
 
-  if (!featuredContent) return null;
-
-  return (
-    <div 
-      id="featured-offer-container"
-      className="bg-white rounded-lg shadow-sm p-6 mb-8"
-      dangerouslySetInnerHTML={{ __html: featuredContent }}
-    />
-  );
+  if (!render) return null;
+  return render(featuredContent);
 };
 
 export default FeaturedOffers; 

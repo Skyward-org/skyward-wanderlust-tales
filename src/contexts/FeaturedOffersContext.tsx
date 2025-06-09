@@ -1,30 +1,34 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { OfferData } from '@/services/analyticsService';
 
 interface FeaturedOffersContextType {
-  featuredContent: string;
-  setFeaturedContent: (content: string) => void;
+  featuredContent: OfferData | null;
+  setFeaturedContent: (content: OfferData | null) => void;
 }
 
-const FeaturedOffersContext = createContext<FeaturedOffersContextType | undefined>(undefined);
+const createFeaturedOffersContext = () => {
+  const context = createContext<FeaturedOffersContextType | undefined>(undefined);
+  
+  const useFeaturedOffers = () => {
+    const contextValue = useContext(context);
+    if (!contextValue) {
+      throw new Error('useFeaturedOffers must be used within a FeaturedOffersProvider');
+    }
+    return contextValue;
+  };
 
-export const useFeaturedOffers = () => {
-  const context = useContext(FeaturedOffersContext);
-  if (!context) {
-    throw new Error('useFeaturedOffers must be used within a FeaturedOffersProvider');
-  }
-  return context;
+  const Provider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [featuredContent, setFeaturedContent] = useState<OfferData | null>(null);
+
+    return (
+      <context.Provider value={{ featuredContent, setFeaturedContent }}>
+        {children}
+      </context.Provider>
+    );
+  };
+
+  return { Provider, useFeaturedOffers };
 };
 
-interface FeaturedOffersProviderProps {
-  children: ReactNode;
-}
-
-export const FeaturedOffersProvider: React.FC<FeaturedOffersProviderProps> = ({ children }) => {
-  const [featuredContent, setFeaturedContent] = useState<string>('');
-
-  return (
-    <FeaturedOffersContext.Provider value={{ featuredContent, setFeaturedContent }}>
-      {children}
-    </FeaturedOffersContext.Provider>
-  );
-}; 
+export const { Provider: FeaturedOffersProvider, useFeaturedOffers } = createFeaturedOffersContext();
+export const { Provider: HeroOffersProvider, useFeaturedOffers: useHeroOffers } = createFeaturedOffersContext(); 
