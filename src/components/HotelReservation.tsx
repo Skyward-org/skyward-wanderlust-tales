@@ -1,5 +1,7 @@
 
 import { useUser } from '@/hooks/useUser';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const HotelReservation = () => {
   const { user } = useUser();
@@ -12,34 +14,40 @@ const HotelReservation = () => {
         return {
           name: 'Hotel Casa Fuster',
           location: 'Barcelona, Spain',
+          address: '123 Passeig de Gràcia, Barcelona',
           checkIn: 'March 15, 2024',
           checkOut: 'March 20, 2024',
           nights: 5,
           roomType: 'Superior Double Room',
           guests: 2,
-          price: '$890'
+          price: '$890',
+          image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&auto=format&fit=crop&q=60'
         };
       case 'Business':
         return {
           name: 'The Langham Chicago',
           location: 'Chicago, IL',
+          address: '330 N Wabash Ave, Chicago',
           checkIn: 'March 20, 2024',
           checkOut: 'March 24, 2024',
           nights: 4,
           roomType: 'Executive Suite',
           guests: 1,
-          price: '$1,240'
+          price: '$1,240',
+          image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&auto=format&fit=crop&q=60'
         };
       case 'Guest':
         return {
           name: 'Park Hyatt Tokyo',
           location: 'Tokyo, Japan',
+          address: '3-7-1-2 Nishi Shinjuku, Tokyo',
           checkIn: 'March 25, 2024',
           checkOut: 'March 30, 2024',
           nights: 5,
           roomType: 'Standard King Room',
           guests: 2,
-          price: '$1,150'
+          price: '$1,150',
+          image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&auto=format&fit=crop&q=60'
         };
       default:
         return null;
@@ -51,50 +59,40 @@ const HotelReservation = () => {
   if (!hotelInfo) return null;
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-4">Hotel Reservation</h3>
-      
-      <div className="space-y-4">
-        <div>
-          <h4 className="font-semibold text-lg text-gray-900">{hotelInfo.name}</h4>
-          <p className="text-gray-600">{hotelInfo.location}</p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <p className="text-gray-600">Check-in</p>
-            <p className="font-semibold">{hotelInfo.checkIn}</p>
-          </div>
-          <div>
-            <p className="text-gray-600">Check-out</p>
-            <p className="font-semibold">{hotelInfo.checkOut}</p>
-          </div>
-          <div>
-            <p className="text-gray-600">Duration</p>
-            <p className="font-semibold">{hotelInfo.nights} nights</p>
-          </div>
-          <div>
-            <p className="text-gray-600">Guests</p>
-            <p className="font-semibold">{hotelInfo.guests} guest{hotelInfo.guests > 1 ? 's' : ''}</p>
-          </div>
-        </div>
-
-        <div className="border-t pt-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600">Room Type</span>
-            <span className="font-semibold">{hotelInfo.roomType}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Total Price</span>
-            <span className="text-xl font-bold text-green-600">{hotelInfo.price}</span>
-          </div>
-        </div>
-
-        <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-          Modify Reservation
-        </button>
-      </div>
-    </div>
+    <Card>
+      <CardContent className="p-6">
+        <h4 className="text-lg font-semibold mb-3">Hotel Reservation</h4>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex">
+              <div 
+                className="w-24 h-24 rounded bg-cover bg-center flex-shrink-0"
+                style={{ backgroundImage: `url(${hotelInfo.image})` }}
+              ></div>
+              <div className="ml-4">
+                <h4 className="font-medium">{hotelInfo.name}</h4>
+                <p className="text-sm text-gray-600">{hotelInfo.address}</p>
+                <div className="flex gap-6 mt-2">
+                  <div>
+                    <div className="text-xs text-gray-500">Check-in</div>
+                    <div className="text-sm">{hotelInfo.checkIn}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500">Check-out</div>
+                    <div className="text-sm">{hotelInfo.checkOut}</div>
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <Button variant="outline" size="sm">
+                    View Details
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </CardContent>
+    </Card>
   );
 };
 
