@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import HeroBanner from '@/components/HeroBanner';
 import FlightDetails from '@/components/FlightDetails';
@@ -7,6 +6,7 @@ import HotelReservation from '@/components/HotelReservation';
 import Sidebar from '@/components/Sidebar';
 import FeaturedDestinations from '@/components/FeaturedDestinations';
 import WhyChooseSection from '@/components/WhyChooseSection';
+import StratusStatusTracker from '@/components/StratusStatusTracker';
 import StratusSection from '@/components/StratusSection';
 import Footer from '@/components/Footer';
 
@@ -37,6 +37,7 @@ const Index = () => {
 
       <FeaturedDestinations />
       <WhyChooseSection />
+      <StratusStatusTracker />
       <StratusSection />
       <Footer />
     </div>
