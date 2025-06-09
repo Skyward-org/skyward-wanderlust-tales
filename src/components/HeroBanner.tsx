@@ -1,7 +1,6 @@
-
 import { useUser } from '@/hooks/useUser';
 import { ProfileType } from '@/services/userService';
-import { Plane, Calendar } from 'lucide-react';
+import { Plane, Calendar, Star } from 'lucide-react';
 
 const HeroBanner = () => {
   const { user } = useUser();
@@ -27,18 +26,18 @@ const HeroBanner = () => {
       case 'Guest':
         return {
           destination: 'Tokyo',
-          title: 'Tokyo awaits you',
-          subtitle: 'Discover the perfect blend of tradition and innovation in Japan\'s capital.',
+          title: 'Elevate Your Journey',
+          subtitle: 'Experience premium travel with personalized service and unparalleled comfort.',
           image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&auto=format&fit=crop',
-          tierBadge: 'GUEST ACCESS'
+          tierBadge: 'SKYWARD AIRLINES'
         };
       default:
         return {
           destination: 'Tokyo',
-          title: 'Tokyo awaits you',
-          subtitle: 'Discover the perfect blend of tradition and innovation.',
+          title: 'Elevate Your Journey',
+          subtitle: 'Experience premium travel with personalized service and unparalleled comfort.',
           image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&auto=format&fit=crop',
-          tierBadge: 'GUEST ACCESS'
+          tierBadge: 'SKYWARD AIRLINES'
         };
     }
   };
@@ -73,23 +72,43 @@ const HeroBanner = () => {
             <div className="flex flex-col">
               {/* Badges */}
               <div className="flex flex-wrap gap-2 mb-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full">
-                  <span className="text-white/90">
-                    <Plane size={18} />
-                  </span>
-                  <span className="text-xs font-medium text-white/90">Upcoming Trip</span>
-                </div>
-                
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600/80 backdrop-blur-sm border border-indigo-500/30 rounded-full">
-                  <span className="text-white/90">
-                    <Calendar size={16} />
-                  </span>
-                  <span className="text-xs font-medium text-white/90">Departing Soon</span>
-                </div>
-                
-                <span className="inline-flex items-center px-3 py-1.5 bg-indigo-600/90 text-white text-xs font-medium rounded-full">
-                  {heroContent.tierBadge}
-                </span>
+                {user.profileType === 'Guest' ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full">
+                      <span className="text-white/90">
+                        <Plane size={18} />
+                      </span>
+                      <span className="text-xs font-medium text-white/90">Skyward Airlines</span>
+                    </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600/80 backdrop-blur-sm border border-indigo-500/30 rounded-full">
+                      <span className="text-white/90">
+                        <Star size={16} />
+                      </span>
+                      <span className="text-xs font-medium text-white/90">Featured</span>
+                    </div>
+                    <span className="inline-flex items-center px-3 py-1.5 bg-indigo-600/90 text-white text-xs font-medium rounded-full">
+                      {heroContent.tierBadge}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full">
+                      <span className="text-white/90">
+                        <Plane size={18} />
+                      </span>
+                      <span className="text-xs font-medium text-white/90">Upcoming Trip</span>
+                    </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600/80 backdrop-blur-sm border border-indigo-500/30 rounded-full">
+                      <span className="text-white/90">
+                        <Calendar size={16} />
+                      </span>
+                      <span className="text-xs font-medium text-white/90">Departing Soon</span>
+                    </div>
+                    <span className="inline-flex items-center px-3 py-1.5 bg-indigo-600/90 text-white text-xs font-medium rounded-full">
+                      {heroContent.tierBadge}
+                    </span>
+                  </>
+                )}
               </div>
 
               {/* Title and subtitle */}
@@ -103,7 +122,7 @@ const HeroBanner = () => {
               {/* CTA Button */}
               <div>
                 <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground h-11 rounded-md px-8 bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg transition-all duration-200">
-                  View Trip Details
+                  {user.profileType === 'Guest' ? 'Book a Flight' : 'View Trip Details'}
                 </button>
               </div>
             </div>
