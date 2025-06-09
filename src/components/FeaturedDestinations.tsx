@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react';
 
 const FeaturedDestinations = () => {
   const destinations = [
@@ -37,53 +38,54 @@ const FeaturedDestinations = () => {
 
   const getTagColor = (tag: string) => {
     switch (tag) {
-      case 'Best Deal': return 'bg-green-500';
-      case 'Popular': return 'bg-blue-500';
-      case 'Luxury': return 'bg-purple-500';
-      case 'Adventure': return 'bg-orange-500';
-      default: return 'bg-gray-500';
+      case 'Best Deal': return 'bg-green-100 text-green-800 hover:bg-green-200';
+      case 'Popular': return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
+      case 'Luxury': return 'bg-purple-100 text-purple-800 hover:bg-purple-200';
+      case 'Adventure': return 'bg-orange-100 text-orange-800 hover:bg-orange-200';
+      default: return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
     }
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Destinations</h2>
-          <p className="text-lg text-gray-600">Discover amazing flight deals to your next adventure</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Featured Destinations</h2>
+          <p className="text-lg text-slate-600">Discover amazing flight deals to your next adventure</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {destinations.map((destination, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-200">
               <div className="relative">
                 <img
                   src={destination.image}
                   alt={destination.city}
                   className="w-full h-48 object-cover"
                 />
-                <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-medium text-white ${getTagColor(destination.tag)}`}>
+                <div className={`absolute top-3 left-3 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent backdrop-blur-sm ${getTagColor(destination.tag)}`}>
                   {destination.tag}
                 </div>
               </div>
               
-              <div className="p-4">
-                <h3 className="text-xl font-bold text-gray-900 mb-1">{destination.city}</h3>
-                <p className="text-gray-600 mb-3">{destination.country}</p>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-slate-900 mb-1">{destination.city}</h3>
+                <p className="text-slate-600 mb-4">{destination.country}</p>
                 
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-6">
                   <div>
-                    <p className="text-sm text-gray-500">Starting from</p>
-                    <p className="text-2xl font-bold text-blue-600">{destination.price}</p>
+                    <p className="text-sm text-slate-500">Starting from</p>
+                    <p className="text-2xl font-bold text-indigo-600">{destination.price}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-500">Best time</p>
-                    <p className="font-semibold">{destination.months}</p>
+                    <p className="text-sm text-slate-500">Best time</p>
+                    <p className="font-semibold text-slate-700">{destination.months}</p>
                   </div>
                 </div>
 
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground h-11 rounded-md px-8 bg-indigo-600 hover:bg-indigo-700 shadow-md hover:shadow-lg transition-all duration-200 w-full">
                   Explore Deal
+                  <ArrowRight className="ml-2" size={16} />
                 </button>
               </div>
             </div>

@@ -1,76 +1,46 @@
-
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Company */}
+    <footer className="bg-slate-900 text-white py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-6 text-white">Company</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">About Us</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Careers</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Press</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Investor Relations</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Sustainability</a></li>
+            <h3 className="text-lg font-semibold mb-4">Skyward</h3>
+            <p className="text-slate-300">Elevating your journey to new heights.</p>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-3 uppercase tracking-wide">Company</h4>
+            <ul className="space-y-2 text-slate-300 text-sm">
+              <li><a href="#" className="hover:text-white transition">About Us</a></li>
+              <li><a href="#" className="hover:text-white transition">Careers</a></li>
+              <li><a href="#" className="hover:text-white transition">Press</a></li>
+              <li><a href="#" className="hover:text-white transition">Sustainability</a></li>
             </ul>
           </div>
 
-          {/* Stratus Programs */}
           <div>
-            <h3 className="text-xl font-bold mb-6 text-white">Stratus Programs</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Glide Membership</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Business Elite</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Corporate Travel</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Partner Airlines</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Points & Miles</a></li>
+            <h4 className="text-sm font-semibold mb-3 uppercase tracking-wide">Stratus Program</h4>
+            <ul className="space-y-2 text-slate-300 text-sm">
+              <li><a href="#" className="hover:text-white transition">Lift Tier</a></li>
+              <li><a href="#" className="hover:text-white transition">Glide Tier</a></li>
+              <li><a href="#" className="hover:text-white transition">Soar Tier</a></li>
+              <li><a href="#" className="hover:text-white transition">Program Rules</a></li>
             </ul>
           </div>
 
-          {/* Support */}
           <div>
-            <h3 className="text-xl font-bold mb-6 text-white">Support</h3>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Customer Service</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Baggage Information</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Check-in Help</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Travel Alerts</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white transition-colors text-lg">Accessibility</a></li>
+            <h4 className="text-sm font-semibold mb-3 uppercase tracking-wide">Support</h4>
+            <ul className="space-y-2 text-slate-300 text-sm">
+              <li><a href="#" className="hover:text-white transition">Help Center</a></li>
+              <li><a href="#" className="hover:text-white transition">Contact Us</a></li>
+              <li><a href="#" className="hover:text-white transition">Refund Policy</a></li>
+              <li><a href="#" className="hover:text-white transition">Privacy Policy</a></li>
             </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="text-xl font-bold mb-6 text-white">Contact</h3>
-            <div className="space-y-3 text-slate-400">
-              <p className="text-lg">📞 1-800-SKYWARD</p>
-              <p className="text-lg">✉️ help@skyward.com</p>
-              <p className="text-lg">🌐 24/7 Live Chat</p>
-              <div className="mt-6">
-                <p className="font-semibold text-white text-lg">Follow Us</p>
-                <div className="flex space-x-6 mt-3">
-                  <a href="#" className="text-slate-400 hover:text-white text-lg">Facebook</a>
-                  <a href="#" className="text-slate-400 hover:text-white text-lg">Twitter</a>
-                  <a href="#" className="text-slate-400 hover:text-white text-lg">Instagram</a>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
 
-      {/* Copyright */}
-      <div className="border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-slate-400 text-lg">&copy; 2024 Skyward Airlines. All rights reserved.</p>
-            <div className="flex space-x-8 mt-3 md:mt-0">
-              <a href="#" className="text-slate-400 hover:text-white text-lg">Privacy Policy</a>
-              <a href="#" className="text-slate-400 hover:text-white text-lg">Terms of Service</a>
-              <a href="#" className="text-slate-400 hover:text-white text-lg">Cookie Policy</a>
-            </div>
-          </div>
+        <div className="mt-12 pt-8 border-t border-slate-800 text-center text-slate-400 text-sm">
+          © 2025 Skyward Airlines. All rights reserved.
         </div>
       </div>
     </footer>
