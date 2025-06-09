@@ -1,12 +1,18 @@
-
 import { useState } from 'react';
 import { useUser } from '@/hooks/useUser';
 import { ProfileType } from '@/services/userService';
+import { analyticsService } from '@/services/analyticsService';
 import { Plane, Menu } from 'lucide-react';
 
 const Header = () => {
   const { user, switchProfile } = useUser();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const handleProfileSwitch = (profileType: ProfileType) => {
+    switchProfile(profileType);
+    setIsProfileMenuOpen(false);
+    analyticsService.sendProfileSwitchEvent(profileType);
+  };
 
   return (
     <header className="fixed w-full z-50 transition-all duration-300 bg-transparent py-4">
@@ -46,10 +52,7 @@ const Header = () => {
                       {(['Glide', 'Business', 'Guest'] as ProfileType[]).map((profileType) => (
                         <button
                           key={profileType}
-                          onClick={() => {
-                            switchProfile(profileType);
-                            setIsProfileMenuOpen(false);
-                          }}
+                          onClick={() => handleProfileSwitch(profileType)}
                           className={`w-full text-left px-4 py-3 text-sm hover:bg-gray-50 flex items-center justify-between transition-colors ${
                             user.profileType === profileType ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
                           }`}
