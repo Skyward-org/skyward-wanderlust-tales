@@ -1,4 +1,3 @@
-
 import { useUser } from '@/hooks/useUser';
 import { Shield, Plane, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -116,76 +115,70 @@ const Sidebar = () => {
       </Card>
 
       {/* Boarding Pass */}
-      <div className="mb-4">
-        <h3 className="font-semibold mb-3">Your Boarding Pass</h3>
-        <div className="max-w-md mx-auto relative">
-          <div className="absolute -top-4 -right-4 z-30">
-            <Button size="icon" className="rounded-full h-8 w-8 p-0 bg-blue-600 hover:bg-blue-700 shadow-lg">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="perspective-1000 cursor-pointer scale-90 transition-transform duration-300">
-            <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
-              <div className="bg-gradient-to-r from-blue-600 to-sky-500 px-6 py-4 flex justify-between items-center">
-                <div className="text-white">
-                  <div className="text-sm font-semibold opacity-80">Boarding Pass</div>
-                  <div className="text-lg font-bold">Flight {boardingPass.flight}</div>
-                </div>
-                <div className="bg-white rounded-full h-10 w-10 flex items-center justify-center">
-                  <Plane className="text-blue-600 h-5 w-5 transform rotate-45" />
-                </div>
+      <Card>
+        <CardContent className="p-0 overflow-hidden rounded-lg">
+          <div className="bg-gradient-to-r from-indigo-600 to-blue-600 p-4 text-white rounded-t-lg">
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-sm opacity-80">Boarding Pass</div>
+                <div className="font-semibold">{boardingPass.flight}</div>
               </div>
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <div className="text-sm text-gray-500">From</div>
-                    <div className="text-xl font-bold">{boardingPass.from.code}</div>
-                    <div className="text-xs text-gray-500">{boardingPass.from.city}</div>
-                  </div>
-                  <div className="flex-1 flex flex-col items-center px-4">
-                    <div className="w-full border-t border-dashed border-gray-300 relative">
-                      <Plane className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-600 h-5 w-5 rotate-45" />
-                    </div>
-                    <div className="text-xs text-gray-500 mt-2">{boardingPass.duration}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm text-gray-500">To</div>
-                    <div className="text-xl font-bold">{boardingPass.to.code}</div>
-                    <div className="text-xs text-gray-500">{boardingPass.to.city}</div>
-                  </div>
-                </div>
-                <div className="flex justify-between mb-4">
-                  <div>
-                    <div className="text-xs text-gray-500">Date</div>
-                    <div className="font-medium">{boardingPass.date}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500">Departure</div>
-                    <div className="font-medium">{boardingPass.departure}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500">Gate</div>
-                    <div className="font-medium">{boardingPass.gate}</div>
-                  </div>
-                </div>
-                <div className="flex items-center mb-6">
-                  <div className="mr-4">
-                    <div className="text-xs text-gray-500">Passenger</div>
-                    <div className="font-medium">{boardingPass.passenger}</div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500">Seat</div>
-                    <div className="font-medium">{boardingPass.seat}</div>
-                  </div>
-                </div>
-                <div className="flex justify-center">
-                  <div className="text-xs text-gray-500">Tap to view boarding time</div>
-                </div>
+              <div className="text-right">
+                <div className="text-sm opacity-80">Status</div>
+                <div className="font-semibold">Confirmed</div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <div className="text-sm text-gray-500">From</div>
+                <div className="text-xl font-bold">{boardingPass.from.code}</div>
+                <div className="text-xs text-gray-500">{boardingPass.from.city}</div>
+              </div>
+              <div className="flex-1 flex flex-col items-center px-4">
+                <div className="w-full border-t border-dashed border-gray-300 relative">
+                  <Plane className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-600 h-5 w-5 rotate-45" />
+                </div>
+                <div className="text-xs text-gray-500 mt-2">{boardingPass.duration}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm text-gray-500">To</div>
+                <div className="text-xl font-bold">{boardingPass.to.code}</div>
+                <div className="text-xs text-gray-500">{boardingPass.to.city}</div>
+              </div>
+            </div>
+            <div className="flex justify-between mb-4">
+              <div>
+                <div className="text-xs text-gray-500">Date</div>
+                <div className="font-medium">{boardingPass.date}</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Departure</div>
+                <div className="font-medium">{boardingPass.departure}</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Gate</div>
+                <div className="font-medium">{boardingPass.gate}</div>
+              </div>
+            </div>
+            <div className="flex items-center mb-6">
+              <div className="mr-4">
+                <div className="text-xs text-gray-500">Passenger</div>
+                <div className="font-medium">{boardingPass.passenger}</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Seat</div>
+                <div className="font-medium">{boardingPass.seat}</div>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <div className="text-xs text-gray-500">Tap to view boarding time</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Weather Card */}
       <Card>
