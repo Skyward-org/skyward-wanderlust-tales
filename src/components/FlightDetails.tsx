@@ -1,5 +1,9 @@
 
 import { useUser } from '@/hooks/useUser';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { MapPin, Calendar } from 'lucide-react';
 
 const FlightDetails = () => {
   const { user } = useUser();
@@ -51,46 +55,65 @@ const FlightDetails = () => {
   if (!flightInfo) return null;
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-4">Flight Details</h3>
-      
-      <div className="space-y-4">
-        <div className="flex justify-between items-center border-b pb-4">
-          <div>
-            <p className="text-sm text-gray-600">Flight</p>
-            <p className="font-semibold text-lg">{flightInfo.flightNumber}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-600">Date</p>
-            <p className="font-semibold">{flightInfo.date}</p>
-          </div>
+    <Card className="mb-6">
+      <CardContent className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-semibold">Your {flightInfo.destination} Flight</h3>
+          <Badge variant="outline">
+            Confirmed Booking
+          </Badge>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-600">Departure</p>
-            <p className="font-semibold">{flightInfo.departure}</p>
-            <p className="text-lg font-bold text-blue-600">{flightInfo.departureTime}</p>
-          </div>
-          
-          <div className="text-center">
-            <p className="text-sm text-gray-600">Duration</p>
-            <div className="flex items-center justify-center mt-2">
-              <div className="w-8 h-0.5 bg-gray-300"></div>
-              <div className="mx-2 text-gray-400">✈</div>
-              <div className="w-8 h-0.5 bg-gray-300"></div>
+            <h4 className="text-sm font-medium text-muted-foreground">Flight Details</h4>
+            <div className="flex items-center mt-1">
+              <MapPin className="h-5 w-5 text-muted-foreground mr-2" />
+              <span className="font-medium">{flightInfo.flightNumber}</span>
             </div>
-            <p className="font-semibold mt-1">{flightInfo.duration}</p>
           </div>
-
-          <div className="text-right">
-            <p className="text-sm text-gray-600">Arrival</p>
-            <p className="font-semibold">{flightInfo.arrival}</p>
-            <p className="text-lg font-bold text-blue-600">{flightInfo.arrivalTime}</p>
+          <div>
+            <h4 className="text-sm font-medium text-muted-foreground">Travel Date</h4>
+            <div className="flex items-center mt-1">
+              <Calendar className="h-5 w-5 text-muted-foreground mr-2" />
+              <span className="font-medium">{flightInfo.date}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="bg-blue-50 border-blue-100">
+            <CardContent className="p-4">
+              <div className="font-medium text-blue-700">{flightInfo.departureTime}</div>
+              <div className="text-sm text-blue-600">{flightInfo.departure}</div>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-green-50 border-green-100">
+            <CardContent className="p-4">
+              <div className="font-medium text-green-700">{flightInfo.duration}</div>
+              <div className="text-sm text-green-600">Flight duration</div>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-amber-50 border-amber-100">
+            <CardContent className="p-4">
+              <div className="font-medium text-amber-700">{flightInfo.arrivalTime}</div>
+              <div className="text-sm text-amber-600">{flightInfo.arrival}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="mt-6 flex gap-3">
+          <Button variant="outline">
+            Check-in Online
+          </Button>
+          <Button>
+            View Trip Details
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
