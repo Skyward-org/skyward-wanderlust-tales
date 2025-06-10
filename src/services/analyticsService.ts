@@ -21,20 +21,6 @@ interface Placement {
 type FeaturedContentCallback = (data: OfferData | null) => void;
 
 class AnalyticsService {
-  private scopesFeatured = {
-    "xdm:activityId": "dps:offer-activity:1ac72eb7bc70991e",
-    "xdm:placementId": "dps:offer-placement:1ac72c2ce4902163"
-  };
-
-  private scopesHero = {
-    "xdm:activityId": "dps:offer-activity:1ab7fa8cd81afff1",
-    "xdm:placementId": "dps:offer-placement:1ab7f42d1a43b305"
-  };
-
-  private scopesBusiness = {
-    "xdm:activityId": "dps:offer-activity:1ad0cec1a6e59081",
-    "xdm:placementId": "dps:offer-placement:1ad0cec1a6e59081"
-  };
 
   private placements: Placement[] = [
     {
@@ -132,12 +118,11 @@ class AnalyticsService {
     return this.profiles[profileType];
   }
 
-  private async fetchPlacementById(placementId: string): Promise<void> {
+  private async fetchPlacementById(placementId: string, profile?: Profile): Promise<void> {
     const placement = this.placements.find(p => p.placementId === placementId);
     if (!placement) return;
 
     try {
-      const profile = this.currentProfileType ? this.getProfile(this.currentProfileType) : null;
       const result = await window.alloy?.("sendEvent", {
         decisionScopes: [this.getScope(placement.placementId, placement.activityId)],
         xdm: profile ? {
@@ -170,25 +155,12 @@ class AnalyticsService {
 
   async sendProfileSwitchEvent(profileType: ProfileType): Promise<void> {
     this.currentProfileType = profileType;
+    const profile = this.getProfile(profileType);
 
-    if (profileType === 'Business') {
-      // Only fetch the business offer for Business profile
-      const businessPlacement = this.placements.find(p => p.placementId === 'dps:offer-placement:1ad0cc6e27389403');
-      if (businessPlacement) {
-        await this.fetchPlacementById(businessPlacement.placementId);
-      }
-      // Clear other placements
+    if (profileType === 'Business' || profileType === 'Glide') {
+      // Fetch all placements for both Business and Glide profiles
       for (const placement of this.placements) {
-        if (placement.placementId !== 'dps:offer-placement:1ad0cc6e27389403') {
-          placement.callback(null);
-        }
-      }
-    } else if (profileType === 'Glide') {
-      // Fetch all placements except business offer for Glide profile
-      for (const placement of this.placements) {
-        if (placement.placementId !== 'dps:offer-placement:1ad0cc6e27389403') {
-          await this.fetchPlacementById(placement.placementId);
-        }
+        await this.fetchPlacementById(placement.placementId, profile);
       }
     } else {
       // Clear all placements for Guest profile

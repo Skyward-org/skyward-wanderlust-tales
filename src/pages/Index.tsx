@@ -67,7 +67,7 @@ const Index = () => {
               terminal="Terminal 5"
             />
             <TripChecklist />
-            <BusinessOffer></BusinessOffer>
+            <BusinessOffer placementId="dps:offer-placement:1ad0cc6e27389403" />
           </div>
         );
       case 'Guest':
