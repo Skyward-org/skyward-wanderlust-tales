@@ -2,16 +2,20 @@ import { useEffect } from 'react';
 import { useHeroOffers } from '@/contexts/FeaturedOffersContext';
 import { analyticsService } from '@/services/analyticsService';
 
-const HeroOffer = () => {
-  const { featuredContent, setFeaturedContent } = useHeroOffers();
-  const render = analyticsService.getPlacementRender('dps:offer-placement:1ab7f42d1a43b305');
+interface HeroOfferProps {
+  placementId: string;
+}
+
+const HeroOffer = ({ placementId }: HeroOfferProps) => {
+  const { heroContent, setHeroContent } = useHeroOffers();
+  const render = analyticsService.getPlacementRender(placementId);
 
   useEffect(() => {
-    analyticsService.setPlacementCallback('dps:offer-placement:1ab7f42d1a43b305', setFeaturedContent);
-  }, [setFeaturedContent]);
+    analyticsService.setPlacementCallback(placementId, setHeroContent);
+  }, [placementId, setHeroContent]);
 
   if (!render) return null;
-  return render(featuredContent);
+  return render(heroContent);
 };
 
 export default HeroOffer; 

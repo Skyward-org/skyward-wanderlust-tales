@@ -33,16 +33,19 @@ class AnalyticsService {
 
   private placements: Placement[] = [
     {
+
+      // Featured offer.
       placementId: 'dps:offer-placement:1ac72c2ce4902163',
       activityId: 'dps:offer-activity:1ac72eb7bc70991e',
       callback: () => {},
       render: (data: OfferData | null) => data?.content ? React.createElement('div', {
         id: 'featured-offer-container',
-        className: 'bg-white rounded-lg shadow-sm p-6 mb-8',
+        className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
         dangerouslySetInnerHTML: { __html: data.content }
       }) : null
     },
     {
+      // Hero offer.
       placementId: 'dps:offer-placement:1ab7f42d1a43b305',
       activityId: 'dps:offer-activity:1ab7fa8cd81afff1',
       callback: () => {},
@@ -56,7 +59,7 @@ class AnalyticsService {
       })) : null
     }
   ];
-  private currentProfileType: ProfileType | null = null;
+  private currentProfileType: ProfileType = 'Guest';
 
   private profiles: Record<ProfileType, Profile> = {
     Glide: {
@@ -86,7 +89,7 @@ class AnalyticsService {
     if (placement) {
       placement.callback = callback;
       if (this.currentProfileType) {
-        this.fetchFeaturedOffers(placementId);
+        this.fetchPlacementById(placementId);
       }
     }
   }
@@ -100,11 +103,11 @@ class AnalyticsService {
   }
 
   private getProfile(profileType: ProfileType): Profile {
-    console.log("-- Getting profile --", profileType);
+    console.log("🤖 -- Getting profile --", profileType);
     return this.profiles[profileType];
   }
 
-  private async fetchFeaturedOffers(placementId: string): Promise<void> {
+  private async fetchPlacementById(placementId: string): Promise<void> {
     const placement = this.placements.find(p => p.placementId === placementId);
     if (!placement) return;
 
@@ -124,7 +127,7 @@ class AnalyticsService {
       });
 
       if (result?.decisions) {
-        const offer = result.decisions.find(d => d.placement.id === placementId);
+        const offer = result.decisions.find(d => d.placement && d.placement.id === placementId);
         console.log("-- Found offer -- ", offer);
         
         if (offer && offer.items.length > 0) {
@@ -144,22 +147,8 @@ class AnalyticsService {
     this.currentProfileType = profileType;
 
     if (profileType === 'Glide' || profileType === 'Business') {
-      const profile = this.getProfile(profileType);
-      await window.alloy?.("sendEvent", {
-        xdm: {
-          identityMap: {
-            hashedAeroplanNumber: [{
-              id: profile.hashedAeroplanNumber,
-              authenticatedState: "authenticated",
-              primary: true
-            }]
-          }
-        }
-      });
-      console.log("-- Sent profile switch event --", profile.name);
-
       for (const placement of this.placements) {
-        await this.fetchFeaturedOffers(placement.placementId);
+        await this.fetchPlacementById(placement.placementId);
       }
     } else {
       for (const placement of this.placements) {

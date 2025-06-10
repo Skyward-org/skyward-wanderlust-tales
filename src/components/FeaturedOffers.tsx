@@ -2,13 +2,17 @@ import { useEffect } from 'react';
 import { useFeaturedOffers } from '@/contexts/FeaturedOffersContext';
 import { analyticsService } from '@/services/analyticsService';
 
-const FeaturedOffers = () => {
+interface FeaturedOffersProps {
+  placementId: string;
+}
+
+const FeaturedOffers = ({ placementId }: FeaturedOffersProps) => {
   const { featuredContent, setFeaturedContent } = useFeaturedOffers();
-  const render = analyticsService.getPlacementRender('dps:offer-placement:1ac72c2ce4902163');
+  const render = analyticsService.getPlacementRender(placementId);
 
   useEffect(() => {
-    analyticsService.setPlacementCallback('dps:offer-placement:1ac72c2ce4902163', setFeaturedContent);
-  }, [setFeaturedContent]);
+    analyticsService.setPlacementCallback(placementId, setFeaturedContent);
+  }, [placementId, setFeaturedContent]);
 
   if (!render) return null;
   return render(featuredContent);

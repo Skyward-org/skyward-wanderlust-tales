@@ -13,7 +13,8 @@ import HeroOffer from '@/components/HeroOffer';
 import Footer from '@/components/Footer';
 import { useUser } from '@/hooks/useUser';
 import { Umbrella, X, CircleAlert } from 'lucide-react';
-import { FeaturedOffersProvider, HeroOffersProvider } from '@/contexts/FeaturedOffersContext';
+import { FeaturedOffersProvider } from '@/contexts/FeaturedOffersContext';
+import FeaturedBanner from '@/components/FeaturedBanner';
 
 const Index = () => {
   const { user } = useUser();
@@ -27,8 +28,8 @@ const Index = () => {
       case 'Business':
         return (
           <div className="lg:col-span-2">
-            <HeroOffer />
-            <FeaturedOffers />
+            <HeroOffer placementId="dps:offer-placement:1ab7f42d1a43b305" />
+            <FeaturedOffers placementId="dps:offer-placement:1ac72c2ce4902163" />
             <div className="bg-white rounded-lg shadow-sm p-8">
               <h2 className="text-2xl font-bold text-gray-900">Hello Business</h2>
               <p className="text-gray-600 mt-2">Welcome to your business travel dashboard.</p>
@@ -38,7 +39,8 @@ const Index = () => {
       case 'Guest':
         return (
           <div className="lg:col-span-3">
-            <HeroOffer />
+            <HeroOffer placementId="dps:offer-placement:1ab7f42d1a43b305" />
+            <FeaturedOffers placementId="dps:offer-placement:1ac72c2ce4902163" />
             <div className="mb-12">
               <div>
                 <h2 className="text-2xl font-semibold mb-4">Welcome to Skyward Airlines</h2>
@@ -125,82 +127,85 @@ const Index = () => {
         );
       default:
         return (
+          <>
           <div className="lg:col-span-2">
-            <FeaturedOffers />
+
+            <HeroOffer placementId="dps:offer-placement:1ab7f42d1a43b305" />
             <FlightDetails />
             <TripChecklist />
             <HotelReservation />
           </div>
+          
+          </>
         );
     }
   };
 
   return (
     <FeaturedOffersProvider>
-      <HeroOffersProvider>
-        <div className="min-h-screen bg-slate-50">
-          <Header />
-          <HeroBanner />
-          
-          <div className="container mx-auto px-4 py-8">
-            {user?.profileType !== 'Guest' && (
-              <>
-                {/* Trip Title Section */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-8">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h2 className="text-2xl font-bold">Your Trip to {getDestinationCity()}</h2>
-                      <p className="text-gray-600">Departing in 3 days</p>
-                    </div>
-                    <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-indigo-100 text-indigo-800">
-                      {user?.profileType || 'Guest'} Member
-                    </div>
+      <div className="min-h-screen bg-slate-50">
+        <Header />
+        <HeroBanner />
+        
+        <div className="container mx-auto px-4 py-8">
+          {user?.profileType !== 'Guest' && (
+            <>
+              {/* Trip Title Section */}
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-8">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-2xl font-bold">Your Trip to {getDestinationCity()}</h2>
+                    <p className="text-gray-600">Departing in 3 days</p>
                   </div>
-                </div>
-
-                {/* Weather Advisory */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md flex items-start">
-                    <div className="bg-amber-100 rounded-full p-2 mr-3">
-                      <Umbrella className="h-5 w-5 text-amber-700" />
-                    </div>
-                    <div className="flex-grow">
-                      <h3 className="font-medium text-amber-900">Weather Advisory: {getDestinationCity()}</h3>
-                      <p className="text-sm text-amber-800 mt-1">Rain forecasted for your arrival day. Pack accordingly and check your flight status regularly.</p>
-                    </div>
-                    <button className="text-amber-700 hover:text-amber-900">
-                      <X className="h-[18px] w-[18px]" />
-                    </button>
+                  <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-indigo-100 text-indigo-800">
+                    {user?.profileType || 'Guest'} Member
                   </div>
-                </div>
-              </>
-            )}
-            
-            {/* Main content section */}
-            <section className="py-12">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                  {renderMainContent()}
-                  
-                  {/* Sidebar - 1 column */}
-                  {user?.profileType !== 'Guest' && (
-                    <div className="lg:col-span-1">
-                      <Sidebar />
-                    </div>
-                  )}
                 </div>
               </div>
-            </section>
 
-            <FeaturedDestinations />
-            <WhyChooseSection />
-            <StratusStatusTracker />
-            <StratusSection />
-          </div>
+              {/* Weather Advisory */}
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md flex items-start">
+                  <div className="bg-amber-100 rounded-full p-2 mr-3">
+                    <Umbrella className="h-5 w-5 text-amber-700" />
+                  </div>
+                  <div className="flex-grow">
+                    <h3 className="font-medium text-amber-900">Weather Advisory: {getDestinationCity()}</h3>
+                    <p className="text-sm text-amber-800 mt-1">Rain forecasted for your arrival day. Pack accordingly and check your flight status regularly.</p>
+                  </div>
+                  <button className="text-amber-700 hover:text-amber-900">
+                    <X className="h-[18px] w-[18px]" />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+          
+          {/* Main content section */}
+          <section className="py-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                {renderMainContent()}
+                
+                {/* Sidebar - 1 column */}
+                {user?.profileType !== 'Guest' && (
+                  <div className="lg:col-span-1">
+                    <Sidebar />
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
 
-          <Footer />
+          <FeaturedOffers placementId="dps:offer-placement:1ac72c2ce4902163" />
+          <FeaturedDestinations />
+          <WhyChooseSection />
+          <StratusStatusTracker />
+          <StratusSection />
         </div>
-      </HeroOffersProvider>
+
+        <Footer />
+      </div>
     </FeaturedOffersProvider>
   );
 };
