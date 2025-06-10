@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import AnalyticsScripts from './components/AnalyticsScripts';
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <Router>
+        <AnalyticsScripts />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
