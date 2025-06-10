@@ -1,5 +1,7 @@
 # Welcome to your Lovable project
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d6e4d8a2-2f47-4a68-af98-bd3692718225/deploy-status)](https://app.netlify.com/projects/regal-malabi-71d56d/deploys)
+
 ## Project info
 
 **URL**: https://lovable.dev/projects/68ea1172-1a6a-44c8-ac07-2e389544ffc8
