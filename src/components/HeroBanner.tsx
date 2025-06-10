@@ -17,10 +17,10 @@ const HeroBanner = () => {
         };
       case 'Business':
         return {
-          destination: 'New York',
-          title: 'New York awaits you',
+          destination: 'Tokyo',
+          title: 'Tokyo awaits you',
           subtitle: 'Experience executive travel with first-class amenities and priority services.',
-          image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?q=80&auto=format&fit=crop',
+          image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&auto=format&fit=crop',
           tierBadge: 'BUSINESS PERKS'
         };
       case 'Guest':
@@ -28,7 +28,7 @@ const HeroBanner = () => {
           destination: 'Tokyo',
           title: 'Elevate Your Journey',
           subtitle: 'Experience premium travel with personalized service and unparalleled comfort.',
-          image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&auto=format&fit=crop',
+          image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&auto=format&fit=crop',
           tierBadge: 'SKYWARD AIRLINES'
         };
       default:
@@ -36,7 +36,7 @@ const HeroBanner = () => {
           destination: 'Tokyo',
           title: 'Elevate Your Journey',
           subtitle: 'Experience premium travel with personalized service and unparalleled comfort.',
-          image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&auto=format&fit=crop',
+          image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&auto=format&fit=crop',
           tierBadge: 'SKYWARD AIRLINES'
         };
     }

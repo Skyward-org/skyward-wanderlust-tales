@@ -1,132 +1,124 @@
+import { Plane, Clock, MapPin } from 'lucide-react';
 
-import { useUser } from '@/hooks/useUser';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { MapPin, PlaneTakeoff, Clock } from 'lucide-react';
+interface FlightDetailsProps {
+  flightNumber: string;
+  departureCity: string;
+  departureCode: string;
+  arrivalCity: string;
+  arrivalCode: string;
+  departureTime: string;
+  arrivalTime: string;
+  departureDate: string;
+  arrivalDate: string;
+  status: 'On Time' | 'Delayed' | 'Boarding';
+  gate?: string;
+  terminal?: string;
+}
 
-const FlightDetails = () => {
-  const { user } = useUser();
-
-  const getFlightInfo = () => {
-    if (!user) return null;
-
-    switch (user.profileType) {
-      case 'Glide':
-        return {
-          destination: 'Barcelona',
-          flightNumber: 'SK 1247',
-          departure: 'JFK - New York',
-          arrival: 'BCN - Barcelona',
-          departureTime: '10:45 AM',
-          arrivalTime: '11:30 PM',
-          duration: '7h 45m',
-          date: 'March 15, 2024',
-          seat: '14A',
-          classType: 'Premium Economy'
-        };
-      case 'Business':
-        return {
-          destination: 'Chicago',
-          flightNumber: 'SK 891',
-          departure: 'LAX - Los Angeles',
-          arrival: 'ORD - Chicago',
-          departureTime: '2:15 PM',
-          arrivalTime: '8:30 PM',
-          duration: '4h 15m',
-          date: 'March 20, 2024',
-          seat: '2B',
-          classType: 'Business Class'
-        };
-      case 'Guest':
-        return {
-          destination: 'Tokyo',
-          flightNumber: 'SK 643',
-          departure: 'SFO - San Francisco',
-          arrival: 'NRT - Tokyo',
-          departureTime: '11:00 AM',
-          arrivalTime: '2:45 PM (+1)',
-          duration: '10h 45m',
-          date: 'March 25, 2024',
-          seat: '23C',
-          classType: 'Economy'
-        };
+const FlightDetails = ({
+  flightNumber,
+  departureCity,
+  departureCode,
+  arrivalCity,
+  arrivalCode,
+  departureTime,
+  arrivalTime,
+  departureDate,
+  arrivalDate,
+  status,
+  gate,
+  terminal
+}: FlightDetailsProps) => {
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'On Time':
+        return 'bg-green-100 text-green-800';
+      case 'Delayed':
+        return 'bg-amber-100 text-amber-800';
+      case 'Boarding':
+        return 'bg-blue-100 text-blue-800';
       default:
-        return null;
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const flightInfo = getFlightInfo();
-
-  if (!flightInfo) return null;
-
   return (
-    <Card className="mb-6">
-      <CardContent className="p-6">
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <h3 className="text-xl font-semibold">Flight Details</h3>
-            <p className="text-gray-500">{flightInfo.flightNumber} · {flightInfo.departure.split(' - ')[1]} to {flightInfo.arrival.split(' - ')[1]}</p>
+    <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-semibold text-gray-900">Flight Details</h2>
+        <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(status)}`}>
+          {status}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <MapPin className="w-4 h-4 text-gray-500" />
+            <span className="text-sm text-gray-500">From</span>
           </div>
-          <Button variant="outline" size="sm">
-            Change Flight
-          </Button>
+          <div className="text-lg font-semibold text-gray-900">{departureCity}</div>
+          <div className="text-sm text-gray-500">{departureCode}</div>
         </div>
 
-        <Card className="mb-6 bg-gradient-to-r from-indigo-50 to-blue-50 border-indigo-100">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center">
-                <div className="bg-indigo-100 rounded-full p-2 mr-3">
-                  <PlaneTakeoff className="h-5 w-5 text-indigo-600" />
-                </div>
-                <div>
-                  <span className="text-sm text-gray-500">{flightInfo.date}</span>
-                  <div className="font-medium">{flightInfo.flightNumber}</div>
-                </div>
-              </div>
-              <Badge className="bg-green-100 text-green-800 border-transparent hover:bg-green-100">
-                Confirmed
-              </Badge>
-            </div>
+        <div className="flex-1 flex flex-col items-center">
+          <div className="w-full flex items-center">
+            <div className="flex-1 h-px bg-gray-200"></div>
+            <Plane className="w-6 h-6 text-indigo-600 mx-4 transform rotate-90" />
+            <div className="flex-1 h-px bg-gray-200"></div>
+          </div>
+          <div className="text-xs text-gray-500 mt-2">Direct Flight</div>
+        </div>
 
-            <div className="grid grid-cols-7 gap-2">
-              <div className="col-span-3">
-                <div className="font-bold text-xl">{flightInfo.departureTime}</div>
-                <div className="text-sm text-gray-500">{flightInfo.departure}</div>
-              </div>
-              <div className="flex flex-col items-center justify-center col-span-1">
-                <div className="text-xs text-gray-500 mb-1">{flightInfo.duration}</div>
-                <div className="w-full h-0.5 bg-indigo-200 relative">
-                  <div className="absolute w-2 h-2 rounded-full bg-indigo-600 -top-0.75 -left-1"></div>
-                  <div className="absolute w-2 h-2 rounded-full bg-indigo-600 -top-0.75 -right-1"></div>
-                </div>
-              </div>
-              <div className="col-span-3 text-right">
-                <div className="font-bold text-xl">{flightInfo.arrivalTime}</div>
-                <div className="text-sm text-gray-500">{flightInfo.arrival}</div>
-              </div>
-            </div>
+        <div className="flex-1 text-right">
+          <div className="flex items-center gap-2 mb-1 justify-end">
+            <MapPin className="w-4 h-4 text-gray-500" />
+            <span className="text-sm text-gray-500">To</span>
+          </div>
+          <div className="text-lg font-semibold text-gray-900">{arrivalCity}</div>
+          <div className="text-sm text-gray-500">{arrivalCode}</div>
+        </div>
+      </div>
 
-            <div className="flex justify-between items-center mt-4 pt-2 border-t border-indigo-100">
-              <div className="text-sm text-gray-600">
-                <span className="font-medium text-indigo-700">Seat {flightInfo.seat}</span> · {flightInfo.classType}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Clock className="w-4 h-4 text-gray-500" />
+            <span className="text-sm text-gray-500">Departure</span>
+          </div>
+          <div className="text-lg font-semibold text-gray-900">{departureTime}</div>
+          <div className="text-sm text-gray-500">{departureDate}</div>
+        </div>
+
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Clock className="w-4 h-4 text-gray-500" />
+            <span className="text-sm text-gray-500">Arrival</span>
+          </div>
+          <div className="text-lg font-semibold text-gray-900">{arrivalTime}</div>
+          <div className="text-sm text-gray-500">{arrivalDate}</div>
+        </div>
+      </div>
+
+      {(gate || terminal) && (
+        <div className="mt-6 pt-6 border-t border-gray-100">
+          <div className="grid grid-cols-2 gap-4">
+            {gate && (
+              <div>
+                <div className="text-sm text-gray-500 mb-1">Gate</div>
+                <div className="text-lg font-semibold text-gray-900">{gate}</div>
               </div>
-              <div className="flex space-x-1">
-                <Button variant="ghost" size="sm" className="text-indigo-700">
-                  <MapPin className="h-4 w-4 mr-1" />
-                  Map
-                </Button>
-                <Button variant="ghost" size="sm" className="text-indigo-700">
-                  <Clock className="h-4 w-4 mr-1" />
-                  Status
-                </Button>
+            )}
+            {terminal && (
+              <div>
+                <div className="text-sm text-gray-500 mb-1">Terminal</div>
+                <div className="text-lg font-semibold text-gray-900">{terminal}</div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </CardContent>
-    </Card>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

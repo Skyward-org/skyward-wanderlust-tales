@@ -13,13 +13,13 @@ const Sidebar = () => {
       case 'Glide':
         return {
           passenger: user.username,
-          flight: 'SK 1234',
+          flight: 'SK 1247',
           seat: '14A',
-          gate: 'B22',
-          departure: '10:30 AM',
-          date: 'May 15, 2025',
-          from: { code: 'NYC', city: 'New York' },
-          to: { code: 'CHI', city: 'Chicago' },
+          gate: 'A8',
+          departure: '10:45 AM',
+          date: 'March 15, 2024',
+          from: { code: 'JFK', city: 'New York' },
+          to: { code: 'ORD', city: 'Chicago' },
           duration: '2h 45m'
         };
       case 'Business':
@@ -27,12 +27,12 @@ const Sidebar = () => {
           passenger: user.username,
           flight: 'SK 891',
           seat: '3C',
-          gate: 'A7',
+          gate: 'B12',
           departure: '2:15 PM',
-          date: 'May 15, 2025',
-          from: { code: 'NYC', city: 'New York' },
-          to: { code: 'CHI', city: 'Chicago' },
-          duration: '2h 30m'
+          date: 'March 20, 2024',
+          from: { code: 'LAX', city: 'Los Angeles' },
+          to: { code: 'NRT', city: 'Tokyo' },
+          duration: '11h 30m'
         };
       case 'Guest':
         return {
@@ -41,10 +41,10 @@ const Sidebar = () => {
           seat: '28F',
           gate: 'C15',
           departure: '11:00 AM',
-          date: 'May 15, 2025',
-          from: { code: 'NYC', city: 'New York' },
+          date: 'March 25, 2024',
+          from: { code: 'SFO', city: 'San Francisco' },
           to: { code: 'NRT', city: 'Tokyo' },
-          duration: '14h 20m'
+          duration: '10h 45m'
         };
       default:
         return null;
@@ -63,9 +63,9 @@ const Sidebar = () => {
         ];
       case 'Business':
         return [
-          { day: 'Friday', condition: 'Cloudy', emoji: '☁️', temp: '68°F' },
-          { day: 'Saturday', condition: 'Sunny', emoji: '☀️', temp: '72°F' },
-          { day: 'Sunday', condition: 'Partly Cloudy', emoji: '⛅', temp: '74°F' }
+          { day: 'Friday', condition: 'Clear', emoji: '🌤️', temp: '15°C' },
+          { day: 'Saturday', condition: 'Rainy', emoji: '🌧️', temp: '18°C' },
+          { day: 'Sunday', condition: 'Sunny', emoji: '☀️', temp: '20°C' }
         ];
       case 'Guest':
         return [
@@ -80,7 +80,16 @@ const Sidebar = () => {
 
   const getDestinationCity = () => {
     if (!user) return 'Chicago';
-    return user.profileType === 'Guest' ? 'Tokyo' : 'Chicago';
+    switch (user.profileType) {
+      case 'Business':
+        return 'Tokyo';
+      case 'Glide':
+        return 'Chicago';
+      case 'Guest':
+        return 'Tokyo';
+      default:
+        return 'Chicago';
+    }
   };
 
   const boardingPass = getBoardingPassInfo();

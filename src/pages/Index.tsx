@@ -20,16 +20,52 @@ const Index = () => {
   const { user } = useUser();
   const getDestinationCity = () => {
     if (!user) return 'Chicago';
-    return user.profileType === 'Guest' ? 'Tokyo' : 'Chicago';
+    switch (user.profileType) {
+      case 'Business':
+        return 'Tokyo';
+      case 'Glide':
+        return 'Chicago';
+      case 'Guest':
+        return 'Tokyo';
+      default:
+        return 'Chicago';
+    }
+  };
+
+  const getDepartureDays = () => {
+    if (!user) return '3';
+    switch (user.profileType) {
+      case 'Business':
+        return '5';
+      case 'Glide':
+        return '3';
+      case 'Guest':
+        return '7';
+      default:
+        return '3';
+    }
   };
 
   const renderMainContent = () => {
     switch (user?.profileType) {
       case 'Business':
         return (
-          <div className="lg:col-span-2">
-            <HeroOffer placementId="dps:offer-placement:1ab7f42d1a43b305" />
-            <FeaturedOffers placementId="dps:offer-placement:1ac72c2ce4902163" />
+          <div className="lg:col-span-2">  
+            <FlightDetails
+              flightNumber="SK 891"
+              departureCity="Los Angeles"
+              departureCode="LAX"
+              arrivalCity="Tokyo"
+              arrivalCode="NRT"
+              departureTime="2:15 PM"
+              arrivalTime="5:45 PM (+1)"
+              departureDate="March 20, 2024"
+              arrivalDate="March 21, 2024"
+              status="On Time"
+              gate="B12"
+              terminal="Terminal 5"
+            />
+            <TripChecklist />
             <div className="bg-white rounded-lg shadow-sm p-8">
               <h2 className="text-2xl font-bold text-gray-900">Hello Business</h2>
               <p className="text-gray-600 mt-2">Welcome to your business travel dashboard.</p>
@@ -39,8 +75,6 @@ const Index = () => {
       case 'Guest':
         return (
           <div className="lg:col-span-3">
-            <HeroOffer placementId="dps:offer-placement:1ab7f42d1a43b305" />
-            <FeaturedOffers placementId="dps:offer-placement:1ac72c2ce4902163" />
             <div className="mb-12">
               <div>
                 <h2 className="text-2xl font-semibold mb-4">Welcome to Skyward Airlines</h2>
@@ -129,9 +163,21 @@ const Index = () => {
         return (
           <>
           <div className="lg:col-span-2">
-
-            <HeroOffer placementId="dps:offer-placement:1ab7f42d1a43b305" />
-            <FlightDetails />
+            {/* <HeroOffer placementId="dps:offer-placement:1ab7f42d1a43b305" /> */}
+            <FlightDetails
+              flightNumber="SK 1247"
+              departureCity="New York"
+              departureCode="JFK"
+              arrivalCity="Chicago"
+              arrivalCode="ORD"
+              departureTime="10:45 AM"
+              arrivalTime="12:30 PM"
+              departureDate="March 15, 2024"
+              arrivalDate="March 15, 2024"
+              status="On Time"
+              gate="A8"
+              terminal="Terminal 4"
+            />
             <TripChecklist />
             <HotelReservation />
           </div>
@@ -155,7 +201,7 @@ const Index = () => {
                 <div className="flex justify-between items-center">
                   <div>
                     <h2 className="text-2xl font-bold">Your Trip to {getDestinationCity()}</h2>
-                    <p className="text-gray-600">Departing in 3 days</p>
+                    <p className="text-gray-600">Departing in {getDepartureDays()} days</p>
                   </div>
                   <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-indigo-100 text-indigo-800">
                     {user?.profileType || 'Guest'} Member
