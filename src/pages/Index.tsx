@@ -15,6 +15,7 @@ import { useUser } from '@/hooks/useUser';
 import { Umbrella, X, CircleAlert } from 'lucide-react';
 import { FeaturedOffersProvider } from '@/contexts/FeaturedOffersContext';
 import FeaturedBanner from '@/components/FeaturedBanner';
+import { BusinessOffer } from '../components/BusinessOffer';
 
 const Index = () => {
   const { user } = useUser();
@@ -66,10 +67,7 @@ const Index = () => {
               terminal="Terminal 5"
             />
             <TripChecklist />
-            <div className="bg-white rounded-lg shadow-sm p-8">
-              <h2 className="text-2xl font-bold text-gray-900">Hello Business</h2>
-              <p className="text-gray-600 mt-2">Welcome to your business travel dashboard.</p>
-            </div>
+            <BusinessOffer></BusinessOffer>
           </div>
         );
       case 'Guest':
